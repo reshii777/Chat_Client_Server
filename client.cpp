@@ -5,8 +5,8 @@
 
 using namespace std;
 
-#define MESSAGE_LENGTH 1024 // Максимальный размер буфера для данных
-#define PORT 7777 // Будем использовать этот номер порта
+#define MESSAGE_LENGTH 1024 // РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР° РґР»СЏ РґР°РЅРЅС‹С…
+#define PORT 7777 // Р‘СѓРґРµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚РѕС‚ РЅРѕРјРµСЂ РїРѕСЂС‚Р°
 
 SOCKET socket_file_descriptor;
 struct sockaddr_in serveraddress, client;
@@ -20,68 +20,68 @@ int main() {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         cout << "Failed to initialize Winsock." << endl;
-        cout << "Не удалось инициализировать Winsock." << endl;
+        cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ Winsock." << endl;
         cout << "    " << endl;
         return 1;
     }
 
-    // Создадим сокет
+    // РЎРѕР·РґР°РґРёРј СЃРѕРєРµС‚
     socket_file_descriptor = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_file_descriptor == INVALID_SOCKET) {
         cout << "Creation of Socket failed!" << endl;
-        cout << "Ошибка создания сокета!" << endl;
+        cout << "РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ СЃРѕРєРµС‚Р°!" << endl;
         cout << "    " << endl;
         WSACleanup();
         return 1;
     }
 
-    // Установим адрес сервера
+    // РЈСЃС‚Р°РЅРѕРІРёРј Р°РґСЂРµСЃ СЃРµСЂРІРµСЂР°
     serveraddress.sin_addr.s_addr = inet_addr("127.0.0.1");
-    // Зададим номер порта
+    // Р—Р°РґР°РґРёРј РЅРѕРјРµСЂ РїРѕСЂС‚Р°
     serveraddress.sin_port = htons(PORT);
-    // Используем IPv4
+    // РСЃРїРѕР»СЊР·СѓРµРј IPv4
     serveraddress.sin_family = AF_INET;
-    // Установим соединение с сервером
+    // РЈСЃС‚Р°РЅРѕРІРёРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј
     int connection = connect(socket_file_descriptor, (struct sockaddr*)&serveraddress, sizeof(serveraddress));
     if (connection == SOCKET_ERROR) {
         cout << "Connection with the server failed!" << endl;
-        cout << "Не удалось установить соединение с сервером!" << endl;
+        cout << "РќРµ СѓРґР°Р»РѕСЃСЊ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј!" << endl;
         cout << "    " << endl;
         closesocket(socket_file_descriptor);
         WSACleanup();
         return 1;
     }
 
-    // Взаимодействие с сервером
+    // Р’Р·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ СЃРµСЂРІРµСЂРѕРј
     while (1) {
         memset(message, 0, sizeof(message));
         cout << "Enter the message you want to send to the server: " << endl;
-        cout << "Введите сообщение, которое вы хотите отправить на сервер: " << endl;
+        cout << "Р’РІРµРґРёС‚Рµ СЃРѕРѕР±С‰РµРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РІС‹ С…РѕС‚РёС‚Рµ РѕС‚РїСЂР°РІРёС‚СЊ РЅР° СЃРµСЂРІРµСЂ: " << endl;
         cout << "    " << endl;
         cin >> message;
         if ((strncmp(message, "end", 3)) == 0) {
             send(socket_file_descriptor, message, sizeof(message), 0);
             cout << "Client Exit." << endl;
-            cout << "Выход из клиента." << endl;
+            cout << "Р’С‹С…РѕРґ РёР· РєР»РёРµРЅС‚Р°." << endl;
             cout << "    " << endl;
             break;
         }
         int bytes = send(socket_file_descriptor, message, sizeof(message), 0);
-        // Если передали >= 0  байт, значит пересылка прошла успешно
+        // Р•СЃР»Рё РїРµСЂРµРґР°Р»Рё >= 0  Р±Р°Р№С‚, Р·РЅР°С‡РёС‚ РїРµСЂРµСЃС‹Р»РєР° РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅРѕ
         if (bytes >= 0) {
             cout << "Data send to the server successfully!" << endl;
-            cout << "Данные успешно отправлены на сервер!" << endl;
+            cout << "Р”Р°РЅРЅС‹Рµ СѓСЃРїРµС€РЅРѕ РѕС‚РїСЂР°РІР»РµРЅС‹ РЅР° СЃРµСЂРІРµСЂ!" << endl;
             cout << "    " << endl;
         }
         memset(message, 0, sizeof(message));
-        // Ждем ответа от сервера
+        // Р–РґРµРј РѕС‚РІРµС‚Р° РѕС‚ СЃРµСЂРІРµСЂР°
         recv(socket_file_descriptor, message, sizeof(message), 0);
         cout << "Data received from server: " << message << endl;
-        cout << "Данные получены от сервера: " << message << endl;
+        cout << "Р”Р°РЅРЅС‹Рµ РїРѕР»СѓС‡РµРЅС‹ РѕС‚ СЃРµСЂРІРµСЂР°: " << message << endl;
         cout << "    " << endl;
     }
 
-    // закрываем сокет, завершаем соединение
+    // Р·Р°РєСЂС‹РІР°РµРј СЃРѕРєРµС‚, Р·Р°РІРµСЂС€Р°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ
     closesocket(socket_file_descriptor);
     WSACleanup();
 

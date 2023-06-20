@@ -6,8 +6,8 @@
 
 using namespace std;
 
-#define MESSAGE_LENGTH 1024 // Максимальный размер буфера для данных
-#define PORT 7777 // Будем использовать этот номер порта
+#define MESSAGE_LENGTH 1024 // РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР° РґР»СЏ РґР°РЅРЅС‹С…
+#define PORT 7777 // Р‘СѓРґРµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚РѕС‚ РЅРѕРјРµСЂ РїРѕСЂС‚Р°
 
 int main() {
     SetConsoleCP(1251);
@@ -19,44 +19,44 @@ int main() {
     struct sockaddr_in serveraddress, client;
     char message[MESSAGE_LENGTH];
 
-    // Инициализация библиотеки Winsock
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р±РёР±Р»РёРѕС‚РµРєРё Winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         cout << "WSAStartup failed!" << endl;
-        cout << "Ошибка инициализации WSAStartup!" << endl;
+        cout << "РћС€РёР±РєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёРё WSAStartup!" << endl;
         cout << "    " << endl;
         return 1;
     }
 
-    // Создадим сокет
+    // РЎРѕР·РґР°РґРёРј СЃРѕРєРµС‚
     socket_file_descriptor = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_file_descriptor == INVALID_SOCKET) {
         cout << "Creation of Socket failed!" << endl;
-        cout << "Ошибка создания сокета!" << endl;
+        cout << "РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ СЃРѕРєРµС‚Р°!" << endl;
         cout << "    " << endl;
         return 1;
     }
 
-    // Установим адрес сервера
+    // РЈСЃС‚Р°РЅРѕРІРёРј Р°РґСЂРµСЃ СЃРµСЂРІРµСЂР°
     serveraddress.sin_addr.s_addr = INADDR_ANY;
-    // Зададим номер порта
+    // Р—Р°РґР°РґРёРј РЅРѕРјРµСЂ РїРѕСЂС‚Р°
     serveraddress.sin_port = htons(PORT);
-    // Используем IPv4
+    // РСЃРїРѕР»СЊР·СѓРµРј IPv4
     serveraddress.sin_family = AF_INET;
 
-    // Привяжем сокет к адресу и порту
+    // РџСЂРёРІСЏР¶РµРј СЃРѕРєРµС‚ Рє Р°РґСЂРµСЃСѓ Рё РїРѕСЂС‚Сѓ
     if (bind(socket_file_descriptor, (struct sockaddr*)&serveraddress, sizeof(serveraddress)) == SOCKET_ERROR) {
         cout << "Binding failed!" << endl;
-        cout << "Ошибка привязки сокета!" << endl;
+        cout << "РћС€РёР±РєР° РїСЂРёРІСЏР·РєРё СЃРѕРєРµС‚Р°!" << endl;
         cout << "    " << endl;
         closesocket(socket_file_descriptor);
         WSACleanup();
         return 1;
     }
 
-    // Начнем прослушивание соединений
+    // РќР°С‡РЅРµРј РїСЂРѕСЃР»СѓС€РёРІР°РЅРёРµ СЃРѕРµРґРёРЅРµРЅРёР№
     if (listen(socket_file_descriptor, 5) == SOCKET_ERROR) {
         cout << "Listening failed!" << endl;
-        cout << "Ошибка прослушивания соединений!" << endl;
+        cout << "РћС€РёР±РєР° РїСЂРѕСЃР»СѓС€РёРІР°РЅРёСЏ СЃРѕРµРґРёРЅРµРЅРёР№!" << endl;
         cout << "    " << endl;
         closesocket(socket_file_descriptor);
         WSACleanup();
@@ -64,16 +64,16 @@ int main() {
     }
 
     cout << "Server started. Waiting for connections..." << endl;
-    cout << "Сервер запущен. Ожидание подключений..." << endl;
+    cout << "РЎРµСЂРІРµСЂ Р·Р°РїСѓС‰РµРЅ. РћР¶РёРґР°РЅРёРµ РїРѕРґРєР»СЋС‡РµРЅРёР№..." << endl;
     cout << "    " << endl;
 
     while (1) {
-        // Принимаем новое соединение
+        // РџСЂРёРЅРёРјР°РµРј РЅРѕРІРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ
         int client_address_size = sizeof(client);
         connection = accept(socket_file_descriptor, (struct sockaddr*)&client, &client_address_size);
         if (connection == INVALID_SOCKET) {
             cout << "Failed to accept connection!" << endl;
-            cout << "Не удалось принять соединение!" << endl;
+            cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРЅСЏС‚СЊ СЃРѕРµРґРёРЅРµРЅРёРµ!" << endl;
             cout << "    " << endl;
             closesocket(socket_file_descriptor);
             WSACleanup();
@@ -81,50 +81,50 @@ int main() {
         }
 
         cout << "Client connected. Handling connection..." << endl;
-        cout << "Клиент подключен. Обработка соединения..." << endl;
+        cout << "РљР»РёРµРЅС‚ РїРѕРґРєР»СЋС‡РµРЅ. РћР±СЂР°Р±РѕС‚РєР° СЃРѕРµРґРёРЅРµРЅРёСЏ..." << endl;
         cout << "    " << endl;
 
-        // Взаимодействие с клиентом
+        // Р’Р·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ РєР»РёРµРЅС‚РѕРј
         while (1) {
             memset(message, 0, sizeof(message));
 
-            // Ждем сообщение от клиента
+            // Р–РґРµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚ РєР»РёРµРЅС‚Р°
             int bytes = recv(connection, message, sizeof(message), 0);
             if (bytes == SOCKET_ERROR) {
                 cout << "Error receiving message from client!" << endl;
-                cout << "Ошибка при получении сообщения от клиента!" << endl;
+                cout << "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ РєР»РёРµРЅС‚Р°!" << endl;
                 cout << "    " << endl;
                 break;
             }
             else if (bytes == 0) {
-                // Клиент закрыл соединение
+                // РљР»РёРµРЅС‚ Р·Р°РєСЂС‹Р» СЃРѕРµРґРёРЅРµРЅРёРµ
                 cout << "Client disconnected." << endl;
-                cout << "Клиент отключился." << endl;
+                cout << "РљР»РёРµРЅС‚ РѕС‚РєР»СЋС‡РёР»СЃСЏ." << endl;
                 cout << "    " << endl;
                 break;
             }
 
             cout << "Data received from client: " << message << endl;
-            cout << "Получены данные от клиента: " << message << endl;
+            cout << "РџРѕР»СѓС‡РµРЅС‹ РґР°РЅРЅС‹Рµ РѕС‚ РєР»РёРµРЅС‚Р°: " << message << endl;
             cout << "    " << endl;
 
-            // Отправляем ответ клиенту
+            // РћС‚РїСЂР°РІР»СЏРµРј РѕС‚РІРµС‚ РєР»РёРµРЅС‚Сѓ
             if (send(connection, message, strlen(message), 0) == SOCKET_ERROR) {
                 cout << "Error sending message to client!" << endl;
-                cout << "Ошибка отправки сообщения клиенту!" << endl;
+                cout << "РћС€РёР±РєР° РѕС‚РїСЂР°РІРєРё СЃРѕРѕР±С‰РµРЅРёСЏ РєР»РёРµРЅС‚Сѓ!" << endl;
                 cout << "    " << endl;
                 break;
             }
         }
 
-        // Закрываем соединение с клиентом
+        // Р—Р°РєСЂС‹РІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РєР»РёРµРЅС‚РѕРј
         closesocket(connection);
     }
 
-    // Закрываем сокет сервера
+    // Р—Р°РєСЂС‹РІР°РµРј СЃРѕРєРµС‚ СЃРµСЂРІРµСЂР°
     closesocket(socket_file_descriptor);
 
-    // Выгружаем библиотеку Winsock
+    // Р’С‹РіСЂСѓР¶Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ Winsock
     WSACleanup();
 
     return 0;
